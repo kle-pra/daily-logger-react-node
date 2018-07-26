@@ -1,0 +1,35 @@
+{
+  "name": "daily-log-react-node",
+  "version": "1.0.0",
+  "description": "Simple react application to log your daily activity with node backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "frontend": "npm start --prefix frontend",
+    "start-dev": "concurrently \"npm run watch\" \"npm run frontend\"",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "postbuild": "npm run deploy",
+    "deploy": "cp -fr frontend/build/** ./static"
+  },
+  "keywords": [
+    "react",
+    "node",
+    "mongo",
+    "bootstrap",
+    "daily",
+    "log",
+    "logger",
+    "diary"
+  ],
+  "author": "kle-pra",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.6.1"
+  }
+}
