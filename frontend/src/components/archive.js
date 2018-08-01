@@ -8,7 +8,6 @@ export default class Archive extends Component {
     this.state = {
       logs: []
     }
-
     this.handleDateChange = this.handleDateChange.bind(this);
   }
 
