@@ -8,6 +8,7 @@ app.use(express.static('static'));
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 app.use('/api/logs', require('./routes/log.route'));
+app.use('/api/auth', require('./routes/auth.route'));
 
 
 

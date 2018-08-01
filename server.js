@@ -4,7 +4,8 @@ const dbRunner = require('./config/dbRunner');
 const port = process.env.PORT || 9999;
 
 //connect to DB
-mongoose.connect('mongodb://localhost:27017/logger-node', { useNewUrlParser: true })
+// mongoose.connect('mongodb://localhost:27017/logger-node', { useNewUrlParser: true })
+mongoose.connect('mongodb://reactlogger:reactlogger1@ds257551.mlab.com:57551/daily-logger-react', { useNewUrlParser: true })
   .then(() => {
     console.log('connected to db');
     if (process.env != 'production') {

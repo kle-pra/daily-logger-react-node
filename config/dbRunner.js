@@ -1,5 +1,5 @@
 const Log = require('../models/log.model');
-
+const userService = require('../services/auth.service');
 
 module.exports = async () => {
 
@@ -23,4 +23,11 @@ module.exports = async () => {
   await log1.save();
   await log2.save();
   await log3.save();
+  try {
+
+    await userService.registerUser({ username: 'user', password: 'password' });
+  } catch (e) {
+    //if user exists catch error
+    console.log(e.message);
+  }
 }
