@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { loggedIn } from '../services/auth.service';
 
 export default class Archive extends Component {
 
@@ -9,6 +10,11 @@ export default class Archive extends Component {
       logs: []
     }
     this.handleDateChange = this.handleDateChange.bind(this);
+  }
+
+  componentWillMount() {
+    if (!loggedIn())
+      this.props.history.replace('/login');
   }
 
   handleDateChange(e) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { setToken, loggedIn } from '../services/auth.service'
-
+import { loggedIn } from '../services/auth.service'
+import { Redirect } from 'react-router-dom'
 export default class Login extends Component {
 
   constructor(props) {
@@ -34,24 +34,16 @@ export default class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('fds');
-
-    fetch('/api/auth/login', {
-      method: 'post', body: JSON.stringify({ username: this.state.username, password: this.state.password }), headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    }).then(response => response.json())
-      .then(result => {
-        setToken(result.jwt);
-        this.props.history.replace('/');
-      }).catch(e => {
-        console.log(e);
-      });
-    console.log(this.state);
+    this.props.login(this.state.username, this.state.password);
   }
 
   render() {
+    if (this.props.username) {
+      return (
+        <Redirect to="/" />
+      );
+    }
+
     return (
       <div className="container">
         <div className="row">

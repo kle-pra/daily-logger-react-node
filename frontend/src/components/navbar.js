@@ -12,17 +12,20 @@ export class Navbar extends Component {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
+              {this.props.username ? <li className="nav-item">
                 <Link className="nav-link" to="/archive">Archive</Link>
-              </li>
+              </li> : null}
             </ul>
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
+              {!this.props.username ? <li className="nav-item">
                 <Link className="nav-link" to="/login">Login</Link>
-              </li>
-              <li className="nav-item">
+              </li> : null}
+              {this.props.username ? <li onClick={this.props.logout} className="nav-item">
+                <a onClick={this.props.logout} className="nav-link" >Logout {"(" + this.props.username + ")"}</a>
+              </li> : null}
+              {!this.props.username ? <li className="nav-item">
                 <Link className="nav-link" to="/register">Register</Link>
-              </li>
+              </li> : null}
             </ul>
 
           </div>

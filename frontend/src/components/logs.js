@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import AddLog from './add-log';
+import { loggedIn, getToken } from '../services/auth.service';
 
 export default class Logs extends Component {
 
@@ -13,12 +14,23 @@ export default class Logs extends Component {
     this.deleteLog = this.deleteLog.bind(this);
   }
 
+  componentWillMount() {
+    if (!loggedIn())
+      this.props.history.replace('/login');
+  }
+
   componentDidMount() {
     this.getLogs();
   }
 
   getLogs() {
-    fetch('api/logs?date=' + new Date().toDateString())
+    const jwt = getToken();
+    fetch('api/logs?date=' + new Date().toDateString(), {
+      method: 'GET',
+      headers: new Headers({
+        'Authorization': 'Bearer ' + jwt
+      })
+    })
       .then(response => response.json())
       .then(logsJson => {
         this.setState({
@@ -64,6 +76,7 @@ export default class Logs extends Component {
   }
 
   render() {
+
     let logs = (<ul className="list-group">
       {this.state.logs.map((log, i) => {
         return (
