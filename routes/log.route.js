@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     if (req.query.date) {
       console.log("with date");
       const date = new Date(req.query.date);
-      logs = await logService.getLogsForDate(date);
+      logs = await logService.getLogsForDate(date, req.user);
     } else {
       logs = await logService.getLogs();
     }
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     const log = {
       title: req.body.title
     };
-    const newLog = await logService.saveLog(log);
+    const newLog = await logService.saveLog(log, req.user);
     return res.json(newLog);
   } catch (error) {
     console.log(error);
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    await logService.deleteLog(req.params.id);
+    await logService.deleteLog(req.params.id, req.user);
     return res.sendStatus(204);
   } catch (error) {
     console.log(error);
@@ -58,7 +58,7 @@ router.put('/:id', async (req, res) => {
     title: req.body.title,
   }
   try {
-    const updatedLog = await logService.updateLog(req.params.id, updateLogData);
+    const updatedLog = await logService.updateLog(req.params.id, updateLogData, req.user);
     return res.json(updatedLog);
   } catch (error) {
     console.log(error);

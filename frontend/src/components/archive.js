@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { loggedIn } from '../services/auth.service';
+import { loggedIn, getToken } from '../services/auth.service';
 
 export default class Archive extends Component {
 
@@ -17,8 +17,19 @@ export default class Archive extends Component {
       this.props.history.replace('/login');
   }
 
+  componentWillUpdate() {
+    if (!loggedIn())
+      this.props.history.replace('/login');
+  }
+
   handleDateChange(e) {
-    fetch('api/logs?date=' + e.target.value)
+    const jwt = getToken();
+    fetch('api/logs?date=' + e.target.value, {
+      method: 'GET',
+      headers: new Headers({
+        'Authorization': 'Bearer ' + jwt
+      })
+    })
       .then(response => response.json())
       .then(logsJson => {
         this.setState({

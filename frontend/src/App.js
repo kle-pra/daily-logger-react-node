@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Navbar } from './components/navbar';
 import Logs from './components/logs';
+import Footer from './components/footer';
 import Archive from './components/archive';
 import {
   BrowserRouter as Router,
@@ -47,23 +48,27 @@ class App extends Component {
 
   logout() {
     logout();
+    this.setState({ username: null });
   }
 
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Navbar username={this.state.username} render={(props) => <Login {...props} logout={this.logout} username={this.state.username} />} />
-          <div className="container">
-            <Route path="/" exact={true} component={Logs} />
-            <Route path="/logs" render={(props) => <Logs {...props} username={this.state.username} />} />
-            <Route path="/archive"
-              render={(props) => <Archive {...props} username={this.state.username} />} />
-            <Route path="/register" render={(props) => <Register {...props} username={this.state.username} />} />
-            <Route path="/login" render={(props) => <Login {...props} login={this.login} username={this.state.username} />} />
+      <div>
+        <Router>
+          <div className="App">
+            <Navbar username={this.state.username} logout={this.logout} />
+            <div className="container">
+              <Route path="/" exact={true} component={Logs} />
+              <Route path="/logs" render={(props) => <Logs {...props} username={this.state.username} />} />
+              <Route path="/archive"
+                render={(props) => <Archive {...props} username={this.state.username} />} />
+              <Route path="/register" render={(props) => <Register {...props} username={this.state.username} />} />
+              <Route path="/login" render={(props) => <Login {...props} login={this.login} username={this.state.username} />} />
+            </div >
           </div >
-        </div >
-      </Router>
+        </Router>
+        <Footer className="mt-5" />
+      </div>
     );
   }
 }

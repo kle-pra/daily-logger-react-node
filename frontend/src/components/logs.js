@@ -14,6 +14,11 @@ export default class Logs extends Component {
     this.deleteLog = this.deleteLog.bind(this);
   }
 
+  componentWillUpdate() {
+    if (!loggedIn())
+      this.props.history.replace('/login');
+  }
+
   componentWillMount() {
     if (!loggedIn())
       this.props.history.replace('/login');
@@ -42,11 +47,12 @@ export default class Logs extends Component {
   }
 
   addLog(log) {
-    console.log(log);
+    const jwt = getToken();
     fetch('api/logs', {
       method: 'post', body: JSON.stringify(log), headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + jwt
       },
     }).then(response => response.json())
       .then(log => {
@@ -62,8 +68,12 @@ export default class Logs extends Component {
   }
 
   deleteLog(id) {
+    const jwt = getToken();
     fetch('api/logs/' + id, {
-      method: 'delete'
+      method: 'delete',
+      headers: {
+        'Authorization': 'Bearer ' + jwt
+      },
     }).then(response => response)
       .then(() => {
         const logs = this.state.logs.filter(log => log._id !== id);
@@ -76,7 +86,6 @@ export default class Logs extends Component {
   }
 
   render() {
-
     let logs = (<ul className="list-group">
       {this.state.logs.map((log, i) => {
         return (
