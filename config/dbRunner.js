@@ -9,17 +9,17 @@ module.exports = async () => {
   try {
     const user = await userService.registerUser({ username: 'user', password: 'password' });
     const log1 = new Log({
-      title: 'Best thing ever',
+      title: 'Took a walk.',
       user: user.id
     });
 
     const log2 = new Log({
-      title: 'Best thing ever',
+      title: 'Build this app.',
       user: user.id
     });
 
     const log3 = new Log({
-      title: 'Best thing ever',
+      title: 'Swimming.',
       user: user.id
     });
 

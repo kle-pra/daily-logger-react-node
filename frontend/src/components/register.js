@@ -46,6 +46,7 @@ export default class Register extends Component {
   render() {
     return (
       <div className="container">
+        <h4>Registration</h4>
         <div className="row">
           <div className="col-sm-4">
             <form onSubmit={this.handleSubmit}>
