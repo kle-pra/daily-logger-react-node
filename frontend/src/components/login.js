@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { loggedIn } from '../services/auth.service'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
+
 export default class Login extends Component {
 
   constructor(props) {
@@ -46,7 +47,9 @@ export default class Login extends Component {
 
     return (
       <div className="container">
-        <h4>Login</h4>
+        <h4 className="mt-3">Login</h4>
+        <p>Please login to star using this app or <b>register</b> <Link to="/register">here</Link>
+        </p>
         <div className="row">
           <div className="col-sm-4">
             <form onSubmit={this.handleSubmit}>
