@@ -10,7 +10,8 @@
     "start-dev": "concurrently \"npm run watch\" \"npm run frontend\"",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "postbuild": "npm run deploy",
-    "deploy": "cp -fr frontend/build/** ./static"
+    "deploy": "cp -fr frontend/build/** ./static",
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [
     "react",
