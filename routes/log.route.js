@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
   try {
     let logs;
     if (req.query.date) {
-      console.log("with date");
       const date = new Date(req.query.date);
       logs = await logService.getLogsForDate(date, req.user);
     } else {
