@@ -6,7 +6,7 @@ if (process.env.NODE_ENV == 'production') {
 } else if (process.env.NODE_ENV == 'test') {
   MONGO_URL = 'mongodb://localhost:27017/daily-logger-react-test';
 } else if (process.env.NODE_ENV == 'travis') {
-  MONGO_URL = 'mongodb://localhost:27017/daily-logger-react-travis';
+  MONGO_URL = 'mongodb://dailyloggertest:dailyloggertest1@ds033170.mlab.com:33170/daily-logger-react-travis';
 } else {
   MONGO_URL = 'mongodb://localhost:27017/daily-logger-react-dev';
 }
