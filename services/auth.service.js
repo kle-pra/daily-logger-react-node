@@ -3,13 +3,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 module.exports.registerUser = async (userObj) => {
-
-  const passHash = await bcrypt.hash(userObj.password, 10);
-  const user = new User({
+  //pass is hashed pre-save
+  return await new User({
     username: userObj.username,
-    password: passHash
-  })
-  return await user.save();
+    password: userObj.password
+  }).save();
 }
 
 module.exports.loginUserJwt = async (userObj) => {

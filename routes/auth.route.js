@@ -5,7 +5,7 @@ const authService = require('../services/auth.service');
 router.post('/register', async (req, res) => {
 
   if (!req.body.username || !req.body.password) {
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Username/password not send!'
     });
   }
@@ -13,15 +13,14 @@ router.post('/register', async (req, res) => {
     username: req.body.username,
     password: req.body.password
   }
+
   try {
     const newUser = await authService.registerUser(user);
     res.json(newUser);
   } catch (err) {
-    console.log(err);
     res.status(500).json({
       error: err
     });
-
   }
 
 });

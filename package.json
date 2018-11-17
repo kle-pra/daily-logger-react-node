@@ -12,7 +12,7 @@
     "postbuild": "npm run deploy",
     "deploy": "cp -fr frontend/build/** ./static",
     "heroku-postbuild": "npm run build",
-    "test": "mocha **/*.test.js",
+    "test": "export NODE_ENV=test || SET NODE_ENV=test && mocha **/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
   },
   "keywords": [
@@ -40,7 +40,7 @@
     "concurrently": "^3.6.1",
     "expect": "^23.5.0",
     "mocha": "^5.2.0",
-    "request": "^2.88.0",
-    "supertest": "^3.1.0"
+    "supertest": "^3.1.0",
+    "mongodb": "^3.1.10"
   }
 }
