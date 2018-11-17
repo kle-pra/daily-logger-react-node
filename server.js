@@ -4,21 +4,15 @@ const dbRunner = require('./config/dbRunner');
 const port = process.env.PORT || 9999;
 
 //connect to DB
-// mongoose.connect('mongodb://localhost:27017/logger-node', { useNewUrlParser: true })
-mongoose.connect('mongodb://reactlogger:reactlogger1@ds257551.mlab.com:57551/daily-logger-react', { useNewUrlParser: true })
-  .then(() => {
-    console.log('connected to db');
-    if (process.env != 'production') {
-      dbRunner()
-        .then(() => console.log('sample data inserted in dev mode'))
-        .catch(error => {
-          console.log('error inserting sample date: ' + error);
-        })
-    }
-  }).catch(error => {
-    console.log('error connecting to DB: ' + error);
-  });
-
+require('./config/db.config');
+// inser dev mode data
+if (process.env.NODE_ENV != 'production') {
+  dbRunner()
+    .then(() => console.log('sample data inserted in dev mode'))
+    .catch(error => {
+      console.log('error inserting sample date: ' + error);
+    })
+}
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
 });
