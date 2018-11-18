@@ -7,6 +7,12 @@ const { insertTestUsers, testUsers, insertTestLogs } = require('./seedData');
 const app = require('../app');
 require('../config/db.config');
 
+after((done) => {
+  mongoose.disconnect().then(() => {
+    done();
+  });
+});
+
 describe('auth route tests', () => {
 
   beforeEach(insertTestUsers);
