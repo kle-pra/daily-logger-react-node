@@ -1,9 +1,10 @@
 const supertest = require('supertest');
 const expect = require('expect');
 const User = require('../models/user.model');
-const { insertTestUsers, testUsers } = require('./seedData');
-const app = require('../app');
+const mongoose = require('mongoose');
 
+const { insertTestUsers, testUsers, insertTestLogs } = require('./seedData');
+const app = require('../app');
 require('../config/db.config');
 
 describe('auth route tests', () => {
@@ -90,4 +91,49 @@ describe('auth route tests', () => {
         .end(done);
     });
   });
-})
+
+
+  describe("POST login and get JWT ", () => {
+    it('should login with valid user and recieve valid JWT token in body', (done) => {
+      const credentials = {
+        username: testUsers[0].username,
+        password: testUsers[0].password
+      }
+      supertest(app)
+        .post('/api/auth/login')
+        .send(credentials)
+        .expect(200)
+        .expect(res => {
+          expect(res.body.jwt).toBeTruthy();
+          expect(typeof res.body.jwt).toBe('string');
+        })
+        .end(done);
+
+    });
+
+    it('should recieve 500 error with invalid password', (done) => {
+      const credentials = {
+        username: testUsers[0].username,
+        password: 'not-existing-pass'
+      }
+      supertest(app)
+        .post('/api/auth/login')
+        .send(credentials)
+        .expect(500)
+        .expect(res => {
+          expect(res.body.error).toBeTruthy();
+        })
+        .end(done);
+    });
+
+    it('should recieve 500 error without credentials', (done) => {
+      supertest(app)
+        .post('/api/auth/login')
+        .expect(500)
+        .expect(res => {
+          expect(res.body.error).toBeTruthy();
+        })
+        .end(done);
+    });
+  });
+});

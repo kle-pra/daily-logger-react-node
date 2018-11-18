@@ -1,7 +1,7 @@
 const Log = require('../models/log.model');
 
-module.exports.getLogs = async () => {
-  const logs = await Log.find();
+module.exports.getLogs = async (user) => {
+  const logs = await Log.find({ user: user.id });
   return logs;
 };
 
@@ -36,7 +36,7 @@ module.exports.updateLog = async (id, logData, user) => {
 
 module.exports.deleteLog = async (id, user) => {
   await Log.findOneAndRemove({
-    id: id,
+    _id: id,
     user: user.id
   });
 };

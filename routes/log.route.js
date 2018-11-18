@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
       const date = new Date(req.query.date);
       logs = await logService.getLogsForDate(date, req.user);
     } else {
-      logs = await logService.getLogs();
+      logs = await logService.getLogs(req.user);
     }
     return res.json(logs);
   } catch (error) {
