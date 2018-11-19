@@ -148,4 +148,39 @@ describe('log route tests', () => {
         });
     });
   });
+
+  describe('Update log', () => {
+
+    const updatedLog = {
+      title: 'Updated Title',
+      body: 'Updated Body',
+      date: new Date()
+    }
+
+    it('should update log entry with valid user', (done) => {
+      supertest(app)
+        .put(`/api/log/${testLogs[0]._id}`)
+        .send(updatedLog)
+        .set('Authorization', `Bearer ${jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 })}`)
+        .expect(200)
+        .expect(res => {
+          expect(res.id).toBe(testLogs[0]._id);
+          expect(res.title).toBe(updatedLog.title);
+          expect(res.body).toBe(updatedLog.body);
+          expect(res.date).toBe(updatedLog.date);
+        }).end((err, res) => {
+          if (err) {
+            return done();
+          }
+          Log.findOne({ _id: res.body._id }).then(log => {
+            expect(log.title).toBe(updatedLog.title);
+            expect(log.body).toBe(updatedLog.body);
+            return done(err);
+          }).catch(err => done(err));
+
+        });
+    })
+
+  })
+
 });
