@@ -1,9 +1,8 @@
 const supertest = require('supertest');
 const expect = require('expect');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 const Log = require('../models/log.model');
-const { insertTestUsers, testUsers, insertTestLogs, testLogs } = require('./seedData');
+const { insertTestUsers, testUsers, insertTestLogs, testLogs, testTokens } = require('./seedData');
 const app = require('../app');
 require('../config/db.config');
 
@@ -22,7 +21,7 @@ describe('log route tests', () => {
     it('should get logs for user with valid JWT token', (done) => {
       supertest(app)
         .get('/api/logs/')
-        .set('Authorization', 'Bearer ' + jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 }))
+        .set('Authorization', 'Bearer ' + testTokens[0])
         .expect(200)
         .expect(res => {
           expect(res.body.length).toBe(2);
@@ -35,7 +34,7 @@ describe('log route tests', () => {
     it('should get 401 user with unexisting user with JWT token', (done) => {
       supertest(app)
         .get('/api/logs/')
-        .set('Authorization', 'Bearer ' + jwt.sign({ data: "unexsitingUsername" }, 's3cr3t', { expiresIn: 604800 }))
+        .set('Authorization', 'Bearer ' + testTokens[2])
         .expect(401)
         .end(done);
     });
@@ -53,7 +52,7 @@ describe('log route tests', () => {
     it('should delete log from user with valid JWT token', (done) => {
       supertest(app)
         .delete('/api/logs/' + testLogs[0]._id)
-        .set('Authorization', 'Bearer ' + jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 }))
+        .set('Authorization', 'Bearer ' + testTokens[0])
         .expect(204)
         .expect(res => {
           expect(res.body).toBeFalsy;
@@ -75,7 +74,7 @@ describe('log route tests', () => {
     it('should not delete log from user other user with valid JWT token', (done) => {
       supertest(app)
         .delete('/api/logs/' + testLogs[2]._id)
-        .set('Authorization', 'Bearer ' + jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 }))
+        .set('Authorization', 'Bearer ' + testTokens[0])
         .expect(204)
         .expect(res => {
           expect(res.body).toBeFalsy;
@@ -105,7 +104,7 @@ describe('log route tests', () => {
       supertest(app)
         .post('/api/logs/')
         .send(newLog)
-        .set('Authorization', 'Bearer ' + jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 }))
+        .set('Authorization', 'Bearer ' + testTokens[0])
         .expect(200)
         .expect(res => {
           expect(res.body).toBeTruthy();
@@ -132,7 +131,7 @@ describe('log route tests', () => {
       supertest(app)
         .post('/api/logs/')
         .send(newLog)
-        .set('Authorization', 'Bearer ' + jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 }))
+        .set('Authorization', 'Bearer ' + testTokens[0])
         .expect(500)
         .end((err, res) => {
           if (err) {
@@ -161,7 +160,7 @@ describe('log route tests', () => {
       supertest(app)
         .put(`/api/log/${testLogs[0]._id}`)
         .send(updatedLog)
-        .set('Authorization', `Bearer ${jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 })}`)
+        .set('Authorization', `Bearer ${testTokens[0]}`)
         .expect(200)
         .expect(res => {
           expect(res.id).toBe(testLogs[0]._id);

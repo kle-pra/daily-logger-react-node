@@ -1,7 +1,7 @@
 const { ObjectID } = require('mongodb');
 const User = require('../models/user.model');
 const Log = require('../models/log.model');
-
+const jwt = require('jsonwebtoken');
 const userOneId = new ObjectID();
 const userTwoId = new ObjectID();
 
@@ -16,6 +16,12 @@ const testUsers = [
     username: 'testUsername2',
     password: 'testPassword2'
   }
+];
+
+const testTokens = [
+  jwt.sign({ data: testUsers[0].username }, 's3cr3t', { expiresIn: 604800 }),
+  jwt.sign({ data: testUsers[1].username }, 's3cr3t', { expiresIn: 604800 }),
+  jwt.sign({ data: 'un-existing user' }, 's3cr3t', { expiresIn: 604800 })
 ];
 
 const testLogs = [
@@ -68,4 +74,5 @@ module.exports = {
   testLogs,
   insertTestUsers,
   insertTestLogs,
+  testTokens
 }

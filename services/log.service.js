@@ -12,7 +12,7 @@ module.exports.getLogsForDate = async (date, user) => {
   let year = date.getFullYear();
 
   const logs = await Log.find({
-    user: user.id,
+    user: user._id,
     date: {
       $gte: new Date(year, month, day - 1),
       $lt: new Date(year, month, day)
