@@ -12,6 +12,7 @@
     "postbuild": "npm run deploy",
     "deploy": "cp -fr frontend/build/** ./static",
     "heroku-postbuild": "npm run build",
+    "test-travis": "mocha **/*.test.js",
     "test": "export NODE_ENV=test || SET NODE_ENV=test && mocha **/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
   },
